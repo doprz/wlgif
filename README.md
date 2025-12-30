@@ -25,6 +25,21 @@ The result: select a region, record, and get a GIF. No configuration, no complex
 
 ## Installation
 
+### Cargo
+
+```sh
+cargo install wlgif
+```
+
+### Nix
+
+`dipc` is available as a nix flake via GitHub
+
+```sh
+# From GitHub
+nix run github:doprz/wlgif
+```
+
 ### From Source
 
 To build and install from source, first checkout the tag or branch you want to install, then run
