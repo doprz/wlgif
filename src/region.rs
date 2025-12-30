@@ -45,7 +45,12 @@ impl Region {
             .parse()
             .context("invalid height")?;
 
-        Ok(Self { x, y, width, height })
+        Ok(Self {
+            x,
+            y,
+            width,
+            height,
+        })
     }
 
     /// Parse from geometry string: "WxH+X+Y"
@@ -57,12 +62,25 @@ impl Region {
             return Err(Error::InvalidRegion(s.to_string()).into());
         }
 
-        let width: u32 = parts[0].parse().map_err(|_| Error::InvalidRegion(s.to_string()))?;
-        let height: u32 = parts[1].parse().map_err(|_| Error::InvalidRegion(s.to_string()))?;
-        let x: u32 = parts[2].parse().map_err(|_| Error::InvalidRegion(s.to_string()))?;
-        let y: u32 = parts[3].parse().map_err(|_| Error::InvalidRegion(s.to_string()))?;
+        let width: u32 = parts[0]
+            .parse()
+            .map_err(|_| Error::InvalidRegion(s.to_string()))?;
+        let height: u32 = parts[1]
+            .parse()
+            .map_err(|_| Error::InvalidRegion(s.to_string()))?;
+        let x: u32 = parts[2]
+            .parse()
+            .map_err(|_| Error::InvalidRegion(s.to_string()))?;
+        let y: u32 = parts[3]
+            .parse()
+            .map_err(|_| Error::InvalidRegion(s.to_string()))?;
 
-        Ok(Self { x, y, width, height })
+        Ok(Self {
+            x,
+            y,
+            width,
+            height,
+        })
     }
 
     /// Format for wf-recorder's -g flag: "X,Y WxH"
@@ -73,7 +91,11 @@ impl Region {
 
 impl std::fmt::Display for Region {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}x{} at ({}, {})", self.width, self.height, self.x, self.y)
+        write!(
+            f,
+            "{}x{} at ({}, {})",
+            self.width, self.height, self.x, self.y
+        )
     }
 }
 
@@ -121,7 +143,12 @@ mod tests {
 
     #[test]
     fn wf_recorder_format() {
-        let region = Region { x: 100, y: 200, width: 800, height: 600 };
+        let region = Region {
+            x: 100,
+            y: 200,
+            width: 800,
+            height: 600,
+        };
         assert_eq!(region.to_wf_recorder_arg(), "100,200 800x600");
     }
 }

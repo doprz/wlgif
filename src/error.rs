@@ -4,7 +4,10 @@ use thiserror::Error;
 #[derive(Debug, Error)]
 pub enum Error {
     #[error("missing dependency: {cmd}\n  install: {hint}")]
-    MissingDependency { cmd: &'static str, hint: &'static str },
+    MissingDependency {
+        cmd: &'static str,
+        hint: &'static str,
+    },
 
     #[error("region selection cancelled")]
     SelectionCancelled,

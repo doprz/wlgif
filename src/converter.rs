@@ -47,7 +47,10 @@ fn convert_optimized(input: &Path, output: &Path, base_filter: &str, quiet: bool
     let status = Command::new("ffmpeg")
         .args(["-y", "-i"])
         .arg(input)
-        .args(["-vf", &format!("{}[x];[x]palettegen=stats_mode=diff", base_filter)])
+        .args([
+            "-vf",
+            &format!("{}[x];[x]palettegen=stats_mode=diff", base_filter),
+        ])
         .arg(&palette)
         .stdin(Stdio::null())
         .stdout(Stdio::null())
@@ -70,7 +73,10 @@ fn convert_optimized(input: &Path, output: &Path, base_filter: &str, quiet: bool
         .args(["-i", palette.to_str().unwrap()])
         .args([
             "-lavfi",
-            &format!("{}[x];[x][1:v]paletteuse=dither=floyd_steinberg", base_filter),
+            &format!(
+                "{}[x];[x][1:v]paletteuse=dither=floyd_steinberg",
+                base_filter
+            ),
         ])
         .arg(output)
         .stdin(Stdio::null())

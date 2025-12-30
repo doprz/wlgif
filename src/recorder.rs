@@ -6,8 +6,8 @@ use std::{
     path::Path,
     process::{Command, Stdio},
     sync::{
-        atomic::{AtomicBool, Ordering},
         Arc,
+        atomic::{AtomicBool, Ordering},
     },
     time::Duration,
 };

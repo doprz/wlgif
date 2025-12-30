@@ -6,7 +6,7 @@ mod output;
 mod recorder;
 mod region;
 
-use anyhow::{bail, Context, Result};
+use anyhow::{Context, Result, bail};
 use cli::Args;
 use error::Error;
 use region::Region;
@@ -50,7 +50,14 @@ fn main() -> Result<()> {
         return Err(Error::EmptyRecording.into());
     }
 
-    converter::to_gif(&video, &args.output, args.fps, args.width, !args.fast, args.quiet)?;
+    converter::to_gif(
+        &video,
+        &args.output,
+        args.fps,
+        args.width,
+        !args.fast,
+        args.quiet,
+    )?;
 
     if args.keep_video {
         let kept = args.output.with_extension("mp4");
@@ -60,9 +67,7 @@ fn main() -> Result<()> {
         }
     }
 
-    let size = fs::metadata(&args.output)
-        .map(|m| m.len())
-        .unwrap_or(0);
+    let size = fs::metadata(&args.output).map(|m| m.len()).unwrap_or(0);
 
     if !args.quiet {
         output::summary(&args.output, size);
