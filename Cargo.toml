@@ -2,5 +2,25 @@
 name = "wlgif"
 version = "0.1.0"
 edition = "2024"
+description = "Lightweight screen recorder for wlroots-based Wayland compositors that captures regions as GIFs"
+homepage = "https://github.com/doprz/wlgif"
+repository = "https://github.com/doprz/wlgif"
+readme = "README.md"
+license = "MIT"
+keywords = ["wayland", "gif", "screen-recording", "wlroots", "linux"]
+categories = ["command-line-utilities", "multimedia"]
 
 [dependencies]
+anyhow = "1.0.100"
+clap = { version = "4.5.53", features = ["derive"] }
+colored = "3.0.0"
+ctrlc = "3.5.1"
+libc = "0.2.178"
+tempfile = "3.24.0"
+thiserror = "2.0.17"
+which = "8.0.0"
+
+[profile.release]
+lto = true
+strip = true
+codegen-units = 1
