@@ -1,5 +1,7 @@
 # wlgif
 
+[![crates.io](https://img.shields.io/crates/v/wlgif)](https://crates.io/crates/wlgif)
+
 Lightweight screen recorder for wlroots-based Wayland compositors that captures regions as GIFs
 
 ## About
@@ -115,21 +117,6 @@ wlgif --keep-video output.gif
 4. **Encoding**: ffmpeg applies Floyd-Steinberg dithering for high-quality output
 
 The two-pass encoding is why `wlgif` produces smaller, better-looking GIFs than naive single-pass conversion.
-
-## Contributing
-
-Contributions are welcome! Whether it's bug reports, feature requests, or code contributions.
-
-### Guidelines
-
-- **Issues:** Found a bug or have a feature idea? [Open an issue](https://github.com/doprz/dipc/issues)
-- **Pull Requests:** Fork, create a branch, make your changes, and submit a PR
-- **Commit Messages:** This project uses [Conventional Commits](https://www.conventionalcommits.org/)
-  - `feat:` for new features
-  - `fix:` for bug fixes
-  - `docs:` for documentation changes
-  - `refactor:` for code refactoring
-  - Example: `feat: add GPU support`
 
 ## Contributing
 
