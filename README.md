@@ -33,7 +33,7 @@ cargo install wlgif
 
 ### Nix
 
-`dipc` is available as a nix flake via GitHub
+`wlgif` is available as a nix flake via GitHub
 
 ```sh
 # From GitHub
