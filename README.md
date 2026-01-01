@@ -62,15 +62,28 @@ This will build and install `wlgif` in your `~/.cargo/bin`. Make sure that `~/.c
 
 **Compositor support:** Any wlroots-based compositor (Sway, Hyprland, Niri, dwl, etc...)
 
+## How It Works
+
+1. **Region selection**: `slurp` draws a selection overlay on your compositor
+2. **Capture**: `wf-recorder` records using the wlroots screencopy protocol
+3. **Palette generation**: ffmpeg analyzes the video to create an optimal 256-color palette
+4. **Encoding**: ffmpeg applies Floyd-Steinberg dithering for high-quality output
+
+The two-pass encoding is why `wlgif` produces smaller, better-looking GIFs than naive single-pass conversion.
+
+## Contributing
+
+Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines and [HACKING.md](HACKING.md) for development.
+
+
+
 ### Usage
 
 ```
-Usage: wlgif [OPTIONS] <OUTPUT>
-
-Arguments:
-  <OUTPUT>  Output GIF file path
+Usage: wlgif [OPTIONS]
 
 Options:
+  -o, --output <OUTPUT>     Output GIF file path [default: output.gif]
   -d, --duration <SECS>     Recording duration in seconds (0 = manual stop with Ctrl+C) [default: 5]
   -f, --fps <FPS>           Frames per second (10-30 recommended) [default: 15]
   -g, --geometry <WxH+X+Y>  Region geometry, skip interactive selection (WxH+X+Y)
@@ -80,7 +93,6 @@ Options:
   -q, --quiet               Suppress status output
   -h, --help                Print help
   -V, --version             Print version
-
 ```
 
 ## Examples
@@ -123,52 +135,6 @@ wlgif --keep-video output.gif
 | Higher quality | `wlgif --fps 30 out.gif` |
 | Quick capture | `wlgif --fast out.gif` |
 | Scripting | `wlgif -q -g 800x600+0+0 out.gif` |
-
-## How It Works
-
-1. **Region selection**: `slurp` draws a selection overlay on your compositor
-2. **Capture**: `wf-recorder` records using the wlroots screencopy protocol
-3. **Palette generation**: ffmpeg analyzes the video to create an optimal 256-color palette
-4. **Encoding**: ffmpeg applies Floyd-Steinberg dithering for high-quality output
-
-The two-pass encoding is why `wlgif` produces smaller, better-looking GIFs than naive single-pass conversion.
-
-## Contributing
-
-Contributions are welcome! This project aims to stay focused on its core purpose while remaining open to improvements whether it's bug reports, feature requests, or code contributions.
-
-### Guidelines
-
-**Before submitting:**
-1. **Check existing issues** - Your idea might already be discussed
-2. **Open an issue first** - For non-trivial/large changes, discuss the approach before coding
-3. **Keep it focused** - New features should enhance the screen-to-GIF workflow, not add unrelated functionality
-4. **Maintain composability** - Don't break scripting/piping workflows
-5. **Test thoroughly** - Run `cargo test` and test on an actual Wayland session
-6. **Format your code** - Run `cargo fmt` before committing
-7. **Use Conventional Commits** - This project uses [Conventional Commits](https://www.conventionalcommits.org/)
-7. **Write a clear PR description** - Explain *why*, not just *what*
-
-**Good fit for contribution:**
-- Recording controls (pause, countdown, visual feedback)
-- Performance improvements
-- Better error messages
-- Shell completions (bash, zsh, fish)
-- GUI (feature coming soon)
-
-**Not a good fit:**
-- Image editing features (crop, rotate, filters, etc...) - use existing image tools
-- Video editing features (trim, concatenate, etc...) - use existing video tools
-- Format conversion unrelated to screen capture - use ffmpeg directly
-
-When in doubt, open an issue to discuss!
-
-### Testing
-
-Test on a real Wayland session with your compositor of choice. The core workflow to verify:
-1. Region selection works and cancels cleanly
-2. Recording captures the correct region
-3. GIF output is properly encoded
 
 ## License
 
