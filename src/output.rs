@@ -17,6 +17,7 @@ pub fn info(msg: &str) {
 }
 
 /// Print a warning (yellow).
+#[allow(dead_code)]
 pub fn warn(msg: &str) {
     eprintln!("{} {}", "⚠".yellow().bold(), msg);
 }

@@ -64,6 +64,14 @@
               # here *without* rebuilding all dependency crates
               # MY_CUSTOM_VAR = "some value";
 
+              preConfigurePhases = [
+                "buildRevision"
+              ];
+
+              buildRevision = ''
+                export BUILD_REVISION=${inputs.self.shortRev or inputs.self.dirtyShortRev or "unknown"}
+              '';
+
               # Wrap the binary to include runtime dependencies in PATH
               postInstall = ''
                 wrapProgram $out/bin/wlgif \

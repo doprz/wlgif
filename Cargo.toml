@@ -1,6 +1,6 @@
 [package]
 name = "wlgif"
-version = "0.1.0"
+version = "0.2.0-alpha.1"
 edition = "2024"
 description = "Lightweight screen recorder for wlroots-based Wayland compositors that captures regions as GIFs"
 homepage = "https://github.com/doprz/wlgif"
@@ -14,6 +14,7 @@ categories = ["command-line-utilities", "multimedia"]
 anyhow = "1.0.100"
 clap = { version = "4.5.53", features = ["derive"] }
 colored = "3.0.0"
+const_format = "0.2.35"
 ctrlc = "3.5.1"
 libc = "0.2.178"
 tempfile = "3.24.0"

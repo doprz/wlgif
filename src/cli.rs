@@ -1,9 +1,15 @@
 use clap::Parser;
 use std::path::PathBuf;
 
+const BUILD_REVISION: &str = env!("BUILD_REVISION");
+const PKG_VERSION: &str = env!("CARGO_PKG_VERSION");
+
+pub const CUSTOM_VERSION: &str = const_format::formatcp!("{PKG_VERSION}+{BUILD_REVISION}");
+
 #[derive(Parser, Debug)]
 #[command(name = "wlgif")]
-#[command(version, about = "Record a region of your Wayland screen as a GIF")]
+#[command(version = CUSTOM_VERSION)]
+#[command(about = "Record a region of your Wayland screen as a GIF")]
 #[command(after_help = "\x1b[1mExamples:\x1b[0m
   wlgif output.gif                  Select region, record for 5s
   wlgif -d 10 output.gif            Record for 10 seconds
@@ -15,6 +21,7 @@ use std::path::PathBuf;
   slurp, wf-recorder, ffmpeg")]
 pub struct Args {
     /// Output GIF file path
+    #[arg(short, long, default_value = "output.gif")]
     pub output: PathBuf,
 
     /// Recording duration in seconds (0 = manual stop with Ctrl+C)
