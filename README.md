@@ -75,8 +75,6 @@ The two-pass encoding is why `wlgif` produces smaller, better-looking GIFs than 
 
 Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines and [HACKING.md](HACKING.md) for development.
 
-
-
 ### Usage
 
 ```
