@@ -88,4 +88,4 @@ NixOS VM definitions are provided for testing `wlgif` against different Wayland 
 ### VM Configuration
 
 - 2 CPU cores, 2GB RAM, 4GB disk
-- Changes are saved to `wlgif-test-vm.qcow2`
+- VM is saved to `wlgif-test-vm.qcow2`
