@@ -110,6 +110,7 @@
 
             # cargo and rustc are provided by default
             packages = [
+              pkgs.just
             ]
             ++ runtimeDeps;
           };
