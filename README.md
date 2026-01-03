@@ -81,6 +81,7 @@ Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines
 Usage: wlgif [OPTIONS]
 
 Options:
+  -b, --backend <NAME>      Recording backend (auto-detected if not specified)
   -o, --output <OUTPUT>     Output GIF file path [default: output.gif]
   -d, --duration <SECS>     Recording duration in seconds (0 = manual stop with Ctrl+C) [default: 5]
   -f, --fps <FPS>           Frames per second (10-30 recommended) [default: 15]
@@ -91,6 +92,18 @@ Options:
   -q, --quiet               Suppress status output
   -h, --help                Print help
   -V, --version             Print version
+
+Examples:
+  wlgif output.gif                  Select region, record for 5s
+  wlgif -d 10 output.gif            Record for 10 seconds
+  wlgif -d 0 output.gif             Manual stop with Ctrl+C
+  wlgif -g 800x600+100+100 out.gif  Skip selection, use geometry
+  wlgif --fps 30 -w 640 output.gif  30fps, scaled to 640px wide
+  wlgif --backend xdg output.gif    Use XDG portal (cross-compositor)
+
+Dependencies:
+  portal:  xdg-desktop-portal, pipewire, gstreamer
+  wlr:     slurp, wf-recorder, ffmpeg
 ```
 
 ## Examples
@@ -122,6 +135,9 @@ wlgif -q output.gif
 
 # Keep the intermediate video file
 wlgif --keep-video output.gif
+
+# Use XDG portal backend (WIP feature)
+wlgif --backend xdg output.gif
 ```
 
 

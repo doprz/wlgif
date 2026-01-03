@@ -16,10 +16,16 @@ pub const CUSTOM_VERSION: &str = const_format::formatcp!("{PKG_VERSION}+{BUILD_R
   wlgif -d 0 output.gif             Manual stop with Ctrl+C
   wlgif -g 800x600+100+100 out.gif  Skip selection, use geometry
   wlgif --fps 30 -w 640 output.gif  30fps, scaled to 640px wide
+  wlgif --backend xdg output.gif    Use XDG portal backend (cross-compositor)
 
 \x1b[1mDependencies:\x1b[0m
-  slurp, wf-recorder, ffmpeg")]
+  portal:  xdg-desktop-portal, pipewire, gstreamer
+  wlr:     slurp, wf-recorder, ffmpeg")]
 pub struct Args {
+    /// Recording backend (auto-detected if not specified)
+    #[arg(short, long, value_name = "NAME")]
+    pub backend: Option<String>,
+
     /// Output GIF file path
     #[arg(short, long, default_value = "output.gif")]
     pub output: PathBuf,

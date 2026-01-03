@@ -3,11 +3,8 @@ use thiserror::Error;
 /// Domain-specific errors for wlgif operations.
 #[derive(Debug, Error)]
 pub enum Error {
-    #[error("missing dependency: {cmd}\n  install: {hint}")]
-    MissingDependency {
-        cmd: &'static str,
-        hint: &'static str,
-    },
+    #[error("missing dependency: {dep}")]
+    MissingDependency { dep: &'static str },
 
     #[error("region selection cancelled")]
     SelectionCancelled,

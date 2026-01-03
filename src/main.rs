@@ -1,9 +1,8 @@
+mod backend;
 mod cli;
 mod converter;
-mod deps;
 mod error;
 mod output;
-mod recorder;
 mod region;
 
 use anyhow::{Context, Result, bail};
@@ -12,6 +11,8 @@ use error::Error;
 use region::Region;
 use std::fs;
 use tempfile::TempDir;
+
+use crate::backend::RecordConfig;
 
 fn validate_output(args: &Args) -> Result<()> {
     // TODO: Improve extension check via file type
@@ -22,10 +23,14 @@ fn validate_output(args: &Args) -> Result<()> {
     }
 }
 
-fn get_region(args: &Args) -> Result<Region> {
+fn get_region(args: &Args) -> Result<Option<Region>> {
     match &args.geometry {
-        Some(g) => Region::from_geometry(g),
-        None => region::select_interactive(args.quiet),
+        Some(g) => Ok(Some(Region::from_geometry(g)?)),
+        None if args.backend.as_deref() == Some("portal") => {
+            // Portal backend uses its own selection UI
+            Ok(None)
+        }
+        None => Ok(Some(region::select_interactive(args.quiet)?)),
     }
 }
 
@@ -33,18 +38,40 @@ fn main() -> Result<()> {
     let args = Args::parse_args();
 
     validate_output(&args)?;
-    deps::check()?;
+
+    let backend = match &args.backend {
+        Some(name) => backend::by_name(name)?,
+        None => backend::detect()?,
+    };
+
+    if !args.quiet {
+        output::info(&format!("Using {} backend", backend.name()));
+    }
+
+    if backend.is_available().is_err() {
+        bail!(
+            "backend '{}' is not available on this system",
+            backend.name()
+        );
+    }
 
     let region = get_region(&args)?;
 
-    if !args.quiet {
-        output::status(&format!("Region: {}", region));
+    if !args.quiet
+        && let Some(ref r) = region
+    {
+        output::status(&format!("Region: {}", r));
     }
 
     let temp = TempDir::new().context("failed to create temp directory")?;
     let video = temp.path().join("capture.mp4");
+    let config = RecordConfig {
+        fps: args.fps,
+        duration: args.duration,
+        quiet: args.quiet,
+    };
 
-    recorder::record(&region, &video, args.fps, args.duration, args.quiet)?;
+    backend.record(region.as_ref(), &video, &config)?;
 
     if !video.exists() {
         return Err(Error::EmptyRecording.into());
