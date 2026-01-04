@@ -9,6 +9,15 @@ readme = "README.md"
 license = "MIT"
 keywords = ["wayland", "gif", "screen-recording", "wlroots", "linux"]
 categories = ["command-line-utilities", "multimedia"]
+exclude = [
+    "nix/",
+    "*.nix",
+    "flake.lock",
+    ".editorconfig",
+    "justfile",
+    ".envrc",
+    ".github"
+]
 
 [dependencies]
 anyhow = "1.0.100"
