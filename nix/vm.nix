@@ -38,6 +38,7 @@
             };
             modules = [
               ./vm/base.nix
+              ./vm/spice.nix
               module
             ];
           };
