@@ -26,3 +26,5 @@ result-*
 
 # Ignore automatically generated direnv output
 .direnv
+
+wlgif-test-vm.qcow2
