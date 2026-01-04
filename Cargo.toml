@@ -2,7 +2,7 @@
 name = "wlgif"
 version = "0.2.0-alpha.1"
 edition = "2024"
-description = "Lightweight screen recorder for wlroots-based Wayland compositors that captures regions as GIFs"
+description = "Lightweight screen recorder for Wayland that captures regions as GIFs"
 homepage = "https://github.com/doprz/wlgif"
 repository = "https://github.com/doprz/wlgif"
 readme = "README.md"

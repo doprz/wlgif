@@ -1,5 +1,5 @@
 {
-  description = "Lightweight screen recorder for wlroots-based Wayland compositors that captures regions as GIFs";
+  description = "Lightweight screen recorder for Wayland compositors that captures regions as GIFs";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";

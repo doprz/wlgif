@@ -2,7 +2,7 @@
 
 [![crates.io](https://img.shields.io/crates/v/wlgif)](https://crates.io/crates/wlgif)
 
-Lightweight screen recorder for wlroots-based Wayland compositors that captures regions as GIFs
+Lightweight screen recorder for Wayland that captures regions as GIFs
 
 ## About
 
