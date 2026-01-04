@@ -3,6 +3,7 @@ use std::path::Path;
 
 use crate::region::Region;
 mod wlr;
+mod xdg_portal;
 
 pub struct RecordConfig {
     pub fps: u32,
@@ -32,12 +33,15 @@ pub fn detect() -> Result<Box<dyn Backend>> {
         return Ok(Box::new(wlr));
     }
 
-    // TODO: Add xdg-portal support
+    let xdg_portal = xdg_portal::XDGPortalBackend::new();
+    if xdg_portal.is_available().is_ok() {
+        return Ok(Box::new(xdg_portal));
+    }
 
     anyhow::bail!(
         "no recording backend available\n  \
          install either:\n    \
-         - xdg-desktop-portal + pipewire + gstreamer (recommended)\n    \
+         - xdg-desktop-portal + pipewire + gstreamer\n    \
          - wf-recorder (wlroots compositors only)"
     )
 }
@@ -45,8 +49,10 @@ pub fn detect() -> Result<Box<dyn Backend>> {
 /// Get a specific backend by name
 pub fn by_name(name: &str) -> Result<Box<dyn Backend>> {
     match name {
-        // "xdg-portal" | "xdg" | "portal" => Ok(Box::new()),
-        "wlr" | "wlroots" => Ok(Box::new(wlr::WlrBackend::new())),
+        "xdg-desktop-portal" | "xdg-portal" | "xdg" | "portal" => {
+            Ok(Box::new(xdg_portal::XDGPortalBackend::new()))
+        }
+        "wlroots" | "wlr" => Ok(Box::new(wlr::WlrBackend::new())),
         _ => anyhow::bail!("unknown backend: {}", name),
     }
 }

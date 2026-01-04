@@ -7,8 +7,8 @@
   networking.networkmanager.enable = true;
 
   virtualisation.vmVariant = {
-    virtualisation.cores = 2;
-    virtualisation.memorySize = 2048;
+    virtualisation.cores = 4;
+    virtualisation.memorySize = 4096;
     virtualisation.diskSize = 4096;
     virtualisation.graphics = true;
   };
@@ -35,8 +35,18 @@
   services.xserver.enable = true;
   services.dbus.enable = true;
   services.libinput.enable = true;
-  services.qemuGuest.enable = true;
   security.polkit.enable = true;
+
+  # rtkit (optional, recommended) allows Pipewire to use the realtime scheduler for increased performance.
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
+
+  programs.fish.enable = true;
 
   users.users.wlgif-dev = {
     description = "wlgif dev user";
@@ -46,6 +56,6 @@
       "networkmanager"
     ];
     hashedPassword = "";
-    shell = pkgs.bash;
+    shell = pkgs.fish;
   };
 }
