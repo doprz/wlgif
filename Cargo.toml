@@ -1,6 +1,6 @@
 [package]
 name = "wlgif"
-version = "0.2.0-alpha.1"
+version = "0.2.0"
 edition = "2024"
 description = "Lightweight screen recorder for Wayland that captures regions as GIFs"
 homepage = "https://github.com/doprz/wlgif"
