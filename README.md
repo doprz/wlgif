@@ -6,22 +6,32 @@ Lightweight screen recorder for wlroots-based Wayland compositors that captures 
 
 ## About
 
-Screen-to-GIF on Wayland has historically been painful. `wlgif` solves this by composing three excellent tools into a single, seamless workflow:
+Screen-to-GIF on Wayland has historically been painful. `wlgif` solves this with a simple, seamless workflow: select a region, record, and get a GIF. No configuration, no complexity.
 
-1. **slurp** -> Interactive region selection
-2. **wf-recorder** -> Native Wayland capture
-3. **ffmpeg** -> Optimized GIF encoding
+### Backends
 
-The result: select a region, record, and get a GIF. No configuration, no complexity.
+`wlgif` supports two recording backends:
+
+| Backend | Compositors | How it works |
+|---------|-------------|--------------|
+| **portal** | Any (GNOME, KDE, etc...) | XDG Desktop Portal + PipeWire + GStreamer |
+| **wlr** | wlroots-based (Sway, Hyprland, etc...) | slurp + wf-recorder + ffmpeg |
+
+The backend is auto-detected, preferring `portal` for broader compatibility. Use `--backend` to override.
 
 ## Unix Philosophy
 
 `wlgif` follows core Unix principles:
 
-- **Do one thing well** - Screen region to GIF. New features should enhance this core workflow
+- **Do one thing well** - Screen region to GIF
 - **Compose, don't reinvent** - Leverages battle-tested tools instead of reimplementing capture/encoding
 
-**What this means for features:** We welcome additions like recording controls, format options, or even a GUI (feature coming soon) that makes screen-to-GIF better. What we won't become: an image editor, video editor, or general-purpose media tool. Those already exist and do their jobs well.
+**What this means for features:** We welcome additions that make screen-to-GIF better. What we won't become: an image editor, video editor, or general-purpose media tool.
+
+## Contributing
+
+Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines and [HACKING.md](HACKING.md) for development.
+
 
 ## Installation
 
@@ -52,28 +62,26 @@ This will build and install `wlgif` in your `~/.cargo/bin`. Make sure that `~/.c
 
 ### Dependencies
 
-`wlgif` requires these tools in your PATH:
+#### XDG Desktop Portal Backend
 
-| Tool | Purpose | Install |
-|------|---------|---------|
-| slurp | Region selection | `pacman -S slurp` / `apt install slurp` / `dnf install slurp` |
-| wf-recorder | Screen capture | `pacman -S wf-recorder` / `apt install wf-recorder` / `dnf install wf-recorder` |
-| ffmpeg | GIF encoding | `pacman -S ffmpeg` / `apt install ffmpeg` / `dnf install ffmpeg` |
+Works on **any** Wayland compositor with portal support.
 
-**Compositor support:** Any wlroots-based compositor (Sway, Hyprland, Niri, dwl, etc...)
+| Dependency | Purpose |
+|------------|---------|
+| xdg-desktop-portal | Screen capture API |
+| pipewire | Media streaming |
+| gstreamer | Video encoding |
+| ffmpeg | GIF encoding |
 
-## How It Works
+#### wlroots Backend
 
-1. **Region selection**: `slurp` draws a selection overlay on your compositor
-2. **Capture**: `wf-recorder` records using the wlroots screencopy protocol
-3. **Palette generation**: ffmpeg analyzes the video to create an optimal 256-color palette
-4. **Encoding**: ffmpeg applies Floyd-Steinberg dithering for high-quality output
+For wlroots-based compositors (Sway, Hyprland, Niri, dwl, etc.)
 
-The two-pass encoding is why `wlgif` produces smaller, better-looking GIFs than naive single-pass conversion.
-
-## Contributing
-
-Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines and [HACKING.md](HACKING.md) for development.
+| Dependency | Purpose |
+|------------|---------|
+| slurp | Region selection |
+| wf-recorder | Screen capture |
+| ffmpeg | GIF encoding |
 
 ### Usage
 
@@ -140,7 +148,6 @@ wlgif --keep-video output.gif
 wlgif --backend xdg output.gif
 ```
 
-
 ### Tips
 
 | Goal | Command |
@@ -149,6 +156,32 @@ wlgif --backend xdg output.gif
 | Higher quality | `wlgif --fps 30 out.gif` |
 | Quick capture | `wlgif --fast out.gif` |
 | Scripting | `wlgif -q -g 800x600+0+0 out.gif` |
+
+## How It Works
+
+### XDG Desktop Portal Backend
+
+1. **Portal request**: Asks the compositor for screen access via D-Bus
+2. **Source selection**: Compositor shows its native picker (window/monitor)
+3. **PipeWire capture**: Receives video stream from compositor
+4. **GStreamer encoding**: Encodes stream to MP4
+
+### wlroots Backend
+
+1. **Region selection**: `slurp` draws a selection overlay
+2. **Capture**: `wf-recorder` records via wlroots screencopy protocol
+
+### Backend Abstraction Layer to Gif
+
+1. **Palette generation**: ffmpeg analyzes video for optimal 256-color palette
+2. **Encoding**: ffmpeg applies Floyd-Steinberg dithering -> GIF
+
+The two-pass encoding is why `wlgif` produces smaller, better-looking GIFs than naive single-pass conversion.
+
+## Acknowledgements
+
+- [Ghostty](https://github.com/ghostty-org/ghostty/blob/main/HACKING.md#nix-virtual-machines) for inspiration on NixOS VM testing infrastructure
+- [nix.dev](https://nix.dev/tutorials/nixos/nixos-configuration-on-vm.html) for the NixOS VM configuration tutorial
 
 ## License
 
