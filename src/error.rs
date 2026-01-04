@@ -6,6 +6,9 @@ pub enum Error {
     #[error("missing dependency: {dep}")]
     MissingDependency { dep: &'static str },
 
+    #[error("GStreamer plugins missing")]
+    MissingGSPlugins,
+
     #[error("region selection cancelled")]
     SelectionCancelled,
 

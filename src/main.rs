@@ -26,7 +26,8 @@ fn validate_output(args: &Args) -> Result<()> {
 fn get_region(args: &Args) -> Result<Option<Region>> {
     match &args.geometry {
         Some(g) => Ok(Some(Region::from_geometry(g)?)),
-        None if args.backend.as_deref() == Some("portal") => {
+        // TODO: Improve matching
+        None if args.backend.as_deref() == Some("xdg-desktop-portal") => {
             // Portal backend uses its own selection UI
             Ok(None)
         }
