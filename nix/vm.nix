@@ -62,7 +62,7 @@
               fi
             done
 
-            echo "Launching remote-viewer..."
+            echo "Launching virt-viewer..."
             ${pkgs.virt-viewer}/bin/remote-viewer spice://localhost:5930
 
             # When remote-viewer closes, kill the VM

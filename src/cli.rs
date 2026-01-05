@@ -11,12 +11,13 @@ pub const CUSTOM_VERSION: &str = const_format::formatcp!("{PKG_VERSION}+{BUILD_R
 #[command(version = CUSTOM_VERSION)]
 #[command(about = "Record a region of your Wayland screen as a GIF")]
 #[command(after_help = "\x1b[1mExamples:\x1b[0m
-  wlgif output.gif                  Select region, record for 5s
-  wlgif -d 10 output.gif            Record for 10 seconds
-  wlgif -d 0 output.gif             Manual stop with Ctrl+C
-  wlgif -g 800x600+100+100 out.gif  Skip selection, use geometry
-  wlgif --fps 30 -w 640 output.gif  30fps, scaled to 640px wide
-  wlgif --backend xdg output.gif    Use XDG portal backend (cross-compositor)
+  wlgif                     Select region, record for 5s (default behavior)
+  wlgif -d 10               Record for 10 seconds
+  wlgif -d 0                Manual stop with Ctrl+C
+  wlgif -g 800x600+100+100  Skip selection, use geometry
+  wlgif --fps 30 -w 640     30fps, scaled to 640px wide
+  wlgif --backend xdg-desktop-portal    Use XDG portal backend (cross-compositor)
+  wlgif --backend wlroots               Use wlroots backend (supports slurp region selection)
 
 \x1b[1mDependencies:\x1b[0m
   portal:  xdg-desktop-portal, pipewire, gstreamer
