@@ -58,6 +58,10 @@ pub struct Args {
     /// Suppress status output
     #[arg(short, long)]
     pub quiet: bool,
+
+    /// Disable recording area overlay border
+    #[arg(long)]
+    pub no_overlay: bool,
 }
 
 impl Args {
