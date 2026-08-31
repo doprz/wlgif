@@ -12,7 +12,7 @@ pub struct RecordConfig {
 }
 
 /// A screencast backend
-pub trait Backend {
+pub trait Backend: Send {
     /// Backend name
     fn name(&self) -> &'static str;
 

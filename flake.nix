@@ -54,6 +54,7 @@
           # Common arguments can be set here to avoid repeating them later
           # Note: changes here will rebuild all dependency crates
           commonArgs = {
+            # TODO: add version
             src = craneLib.cleanCargoSource ./.;
             strictDeps = true;
 
@@ -112,7 +113,7 @@
                 '';
 
               meta = {
-                description = "Lightweight screen recorder for wlroots-based Wayland compositors that captures regions as GIFs";
+                description = "Lightweight screen recorder for Wayland that captures regions as GIFs";
                 homepage = "https://github.com/doprz/wlgif";
                 license = pkgs.lib.licenses.mit;
                 maintainers = pkgs.lib.maintainers.doprz;

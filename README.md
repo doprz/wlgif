@@ -73,6 +73,32 @@ Works on **any** Wayland compositor with portal support.
 | gstreamer | Video encoding |
 | ffmpeg | GIF encoding |
 
+**GStreamer Requirements:** Requires GStreamer >= 1.14 with base plugins and additional plugin packages.
+
+See https://crates.io/crates/gstreamer for more info.
+
+On Debian/Ubuntu:
+```sh
+apt-get install libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev \
+      gstreamer1.0-plugins-base gstreamer1.0-plugins-good \
+      gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly \
+      gstreamer1.0-libav libgstrtspserver-1.0-dev libges-1.0-dev
+```
+
+On Fedora:
+```sh
+dnf install gstreamer1-devel gstreamer1-plugins-base-devel \
+      gstreamer1-plugins-good gstreamer1-plugins-bad-free \
+      gstreamer1-plugin-libav gstreamer1-rtsp-server-devel \
+      gst-editing-services-devel
+
+```
+
+Additional Fedora packages (RPMFusion):
+```sh
+dnf install gstreamer1-plugins-bad-freeworld gstreamer1-plugins-ugly
+```
+
 #### wlroots Backend
 
 For wlroots-based compositors (Sway, Hyprland, Niri, dwl, etc.)
@@ -102,60 +128,27 @@ Options:
   -V, --version             Print version
 
 Examples:
-  wlgif output.gif                  Select region, record for 5s
-  wlgif -d 10 output.gif            Record for 10 seconds
-  wlgif -d 0 output.gif             Manual stop with Ctrl+C
-  wlgif -g 800x600+100+100 out.gif  Skip selection, use geometry
-  wlgif --fps 30 -w 640 output.gif  30fps, scaled to 640px wide
-  wlgif --backend xdg output.gif    Use XDG portal (cross-compositor)
+  wlgif                     Select region, record for 5s (default behavior)
+  wlgif -d 10               Record for 10 seconds
+  wlgif -d 0                Manual stop with Ctrl+C
+  wlgif -g 800x600+100+100  Skip selection, use geometry
+  wlgif --fps 30 -w 640     30fps, scaled to 640px wide
+  wlgif --backend xdg-desktop-portal    Use XDG portal backend (cross-compositor)
+  wlgif --backend wlroots               Use wlroots backend (supports slurp region selection)
 
 Dependencies:
   portal:  xdg-desktop-portal, pipewire, gstreamer
   wlr:     slurp, wf-recorder, ffmpeg
 ```
 
-## Examples
-
-```bash
-# Basic: select region interactively, record 5 seconds
-wlgif output.gif
-
-# Record for 10 seconds
-wlgif -d 10 output.gif
-
-# Record until Ctrl+C
-wlgif -d 0 output.gif
-
-# Skip interactive selection, specify geometry directly
-wlgif -g 800x600+100+100 output.gif
-
-# Higher framerate (smoother, larger file)
-wlgif --fps 30 output.gif
-
-# Scale output width (maintains aspect ratio)
-wlgif -w 640 output.gif
-
-# Fast mode: skip optimization (quicker, larger file)
-wlgif --fast output.gif
-
-# Quiet mode: no status output
-wlgif -q output.gif
-
-# Keep the intermediate video file
-wlgif --keep-video output.gif
-
-# Use XDG portal backend (WIP feature)
-wlgif --backend xdg output.gif
-```
-
 ### Tips
 
 | Goal | Command |
 |------|---------|
-| Smaller files | `wlgif -w 480 --fps 10 out.gif` |
-| Higher quality | `wlgif --fps 30 out.gif` |
-| Quick capture | `wlgif --fast out.gif` |
-| Scripting | `wlgif -q -g 800x600+0+0 out.gif` |
+| Smaller files | `wlgif -w 480 --fps 10` |
+| Higher quality | `wlgif --fps 30` |
+| Quick capture | `wlgif --fast` |
+| Scripting | `wlgif -q -g 800x600+0+0` |
 
 ## How It Works
 

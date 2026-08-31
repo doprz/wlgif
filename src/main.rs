@@ -3,6 +3,7 @@ mod cli;
 mod converter;
 mod error;
 mod output;
+mod overlay;
 mod region;
 
 use anyhow::{Context, Result, bail};
@@ -72,7 +73,22 @@ fn main() -> Result<()> {
         quiet: args.quiet,
     };
 
-    backend.record(region.as_ref(), &video, &config)?;
+    let use_overlay = !args.no_overlay && region.is_some() && !args.quiet;
+
+    if use_overlay {
+        let r = region.unwrap();
+        let overlay_result = overlay::run_with_overlay(r, backend, &video, &config);
+        if let Err(e) = overlay_result {
+            output::warn(&format!("overlay unavailable: {:#}", e));
+            let fallback_backend = match &args.backend {
+                Some(name) => backend::by_name(name)?,
+                None => backend::detect()?,
+            };
+            fallback_backend.record(None, &video, &config)?;
+        }
+    } else {
+        backend.record(region.as_ref(), &video, &config)?;
+    }
 
     if !video.exists() {
         return Err(Error::EmptyRecording.into());
